@@ -32,7 +32,7 @@ plt.ylabel('L'+'  '+'(erg/s)')
 plt.xscale('log')
 plt.yscale('log')
 plt.show()
-plt.savefig('/media/ashley/zsash/linux/junior/xray/result/2csczl',format='pdf',dpi=200)
+plt.savefig('/media/ashley/zsash/linux/junior/xray/result/2cscsdss/2csczl.png',format='png',dpi=200)
 file.close()
 
 file2=fits.open('/media/ashley/zsash/linux/junior/xray/catalog/2cscsdssmatch.fits')
@@ -80,7 +80,7 @@ plt.ylabel('L'+' '+'erg s-1')
 plt.xscale('log')
 plt.yscale('log')
 
-plt.savefig('/media/ashley/zsash/linux/junior/xray/result/2cscall',format='pdf',dpi=200)
+plt.savefig('/media/ashley/zsash/linux/junior/xray/result/2cscsdss/2cscall.png',format='png',dpi=200)
 
 
 #=================acis_time>=2 or <2
@@ -126,18 +126,18 @@ plt.xscale('log')
 plt.yscale('log')
 plt.xlabel('Distance'+' '+'Mpc')
 plt.ylabel('L'+' '+'erg s-1')
-plt.savefig('/media/ashley/zsash/linux/junior/xray/result/2csc',format='pdf',dpi=200)
+plt.savefig('/media/ashley/zsash/linux/junior/xray/result/2cscsdss/2csc.png',format='png',dpi=200)
 
 L22=[]
 for i in range(0,len(flux_2),1):
     l22=4*math.pi*D21[i]*D21[i]*flux_2[i]
     L22.append(l22)
-
+print(len(D211))#984
 blue=plt.scatter(D211,L22,s=4,facecolors='none',edgecolor='b',label='acis_num>1')
 plt.legend(loc=0)
 plt.xscale('log')
 plt.yscale('log')
 
-plt.savefig('/media/ashley/zsash/linux/junior/xray/result/2cscall',format='pdf',dpi=200)
+plt.savefig('/media/ashley/zsash/linux/junior/xray/result/2cscsdss/2cscall2.png',format='png',dpi=200)
 
     
