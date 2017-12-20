@@ -87,9 +87,10 @@ for i in range(0,len(name_2),1):
             tmpstd_flux.append(0.0)
             std_tmp=np.std(tmpstd_flux)
             std.append(std_tmp)
-        #    uncertainty=flux_hilim[j]/2
-       #     uncertainty_flux.append(uncertainty)
-         #   j=j+1
+            uncertainty=flux_hilim[j]
+            uncertainty_flux.append(uncertainty)
+            
+            
         elif flux[j]!=0.0 and math.isnan(flux_lolim[j])==1:
             tmp_flux.append(flux[j])
             uncertainty=flux_hilim[j]-flux[j]
@@ -97,15 +98,13 @@ for i in range(0,len(name_2),1):
             tmpstd_flux.append(flux[j])
             std_tmp=np.std(tmpstd_flux)
             std.append(std_tmp)
-            #uncertainty_flux.append(uncertainty)
+            uncertainty_flux.append(uncertainty)
         else:
             tmp_flux.append(flux[j])
-            if flux_hilim[j]-flux[j]<=flux[j]-flux_lolim[j]:
-                uncertainty=flux_hilim[j]-flux[j]
-                uncertainty_flux.append(uncertainty)
-            else:
-                uncertainty=flux[j]-flux_lolim[j]
-                uncertainty_flux.append(uncertainty)
+            uncertainty=(flux_hilim[j]-flux_lolim[j])/2
+            uncertainty_flux.append(uncertainty)
+                
+          
             tmpstd_flux.append(flux_hilim[j])
             tmpstd_flux.append(flux[j])
             tmpstd_flux.append(flux_lolim[j])
@@ -137,7 +136,7 @@ for i in range(0,len(name_2),1):
     min_L.append(min_l)
     tmp_excessvar=0
     for n in range(0,len(tmp_flux),1):
-        tmp_excessvar+=((tmp_flux[n]-mean_flux)**2-(std[n])**2)/((len(tmp_flux))*(mean_flux)**2)
+        tmp_excessvar+=((tmp_flux[n]-mean_flux)**2-(uncertainty_flux[n])**2)/((len(tmp_flux))*(mean_flux)**2)
     excess_var.append(tmp_excessvar)# 
     tmp_sd1=0
     for n in range(0,len(tmp_flux),1):
@@ -152,50 +151,38 @@ meanl_div1040=[n/(10**40) for n in mean_L]
 sqrt_rms=[np.sqrt(n) for n in excess_var]
     #print(excess_var)
 logmeanl=[np.log10(n) for n in mean_L]
-#print('x',log_meanl)
-#print('y',excess_var)
-#=====change y to square
-sigma1=[];sigma2=[];sigma3=[];sigma4=[];sigma5=[];sigma6=[];sigma7=[];sigma8=[];sigma9=[]
-sigma10=[];sigma11=[]
-meanl1=[];meanl2=[];meanl3=[];meanl4=[];meanl5=[];meanl6=[];meanl7=[];meanl8=[];meanl9=[];
-meanl10=[];meanl11=[]
+
+sigma1=[];sigma2=[];sigma3=[];sigma4=[];sigma5=[];sigma6=[];
+
+meanl1=[];meanl2=[];meanl3=[];meanl4=[];meanl5=[];meanl6=[];
+
 evar1=[];evar2=[];evar3=[];evar4=[];evar5=[];evar6=[]
 for n in range(0,len(logmeanl),1):
     if 40>=logmeanl[n]>=39 :
         sigma1.append(Sd2[n])
         meanl1.append(logmeanl[n])
         evar1.append(excess_var[n])
-    #if 39.5<=logmeanl[n]<=40 :
-     #   sigma2.append(Sd2[n])
-      #  meanl2.append(logmeanl[n])
+
     if 41>=logmeanl[n]>=40 :
         sigma2.append(Sd2[n])
         meanl2.append(logmeanl[n])
         evar2.append(excess_var[n])
-    #if 40.5<=logmeanl[n]>=41 :
-     #   sigma4.append(Sd2[n])
-      #  meanl4.append(logmeanl[n])
+
     if 42>=logmeanl[n]>=41 :
         sigma3.append(Sd2[n])
         meanl3.append(logmeanl[n])
         evar3.append(excess_var[n])
-    #if 41.5<=logmeanl[n]>=42 :
-     #   sigma6.append(Sd2[n])
-      #  meanl6.append(logmeanl[n])
+ 
     if 43>=logmeanl[n]>=42 :
         sigma4.append(Sd2[n])
         meanl4.append(logmeanl[n])
         evar4.append(excess_var[n])
-    #if 42.5<=logmeanl[n]>=43 :
-     #   sigma8.append(Sd2[n])
-      #  meanl8.append(logmeanl[n])
+ 
     if 44>=logmeanl[n]>=43 :
         sigma5.append(Sd2[n])
         meanl5.append(logmeanl[n])
         evar5.append(excess_var[n])
-    #if 44>=logmeanl[n]>=43.5 :
-     #   sigma10.append(Sd2[n])
-      #meanl10.append(logmeanl[n])
+ 
     if 45>=logmeanl[n]>=44 :
         sigma6.append(Sd2[n])
         meanl6.append(logmeanl[n])
@@ -203,9 +190,7 @@ for n in range(0,len(logmeanl),1):
 mean_sigma1=np.sum(sigma1)/len(sigma1)
 mean_evar1=np.sum(evar1)/len(evar1)
 tmp_err1=0;tmp_err2=0;tmp_err3=0;tmp_err4=0;tmp_err5=0;tmp_err6=0;
-#tmp_err7=[];tmp_err8=[];tmp_err9=[];tmp_err10=[];tmp_err11=[]
-#mean_ml1=[];mean_ml2=[];mean_ml3=[];mean_ml3=[];mean_ml4=[];mean_ml5=[];
-#mean_ml6=[];mean_ml7=[];mean_ml8=[];mean_ml9=[];mean_ml10=[];mean_ml11=[]
+
 for n in range(0,len(evar1),1):
     tmp_err1+=(evar1[n]-mean_evar1)**2/(len(evar1)*(len(evar1)-1))
 print('tmp_err1',tmp_err1)
@@ -259,13 +244,10 @@ x=[mean_ml1,mean_ml2,mean_ml3,mean_ml4,mean_ml5,mean_ml6]
 y=[mean_evar1,mean_evar2,mean_evar3,mean_evar4,mean_evar5,mean_evar6]
   
 
-B=pt.ArrowStyle("Fancy", head_length=.4, head_width=.4, tail_width=.4)
-a=plt.scatter(logmeanl,excess_var,s=4,facecolors='none',edgecolor='grey',label='acis_num>=2')
+
 
 plt.legend(loc=0)
-#plt.yscale('log')
-#plt.errorbar(logmeanl,excess_var,ms=4,yerr=Sd2,lolims=True,uplims=False,markerfacecolor='none',markeredgecolor='g',fmt='o',c='grey')
-#plt.errorbar(logmeanl,excess_var,ms=4,yerr=Sd2,lolims=False,uplims=True,markerfacecolor='none',markeredgecolor='g',fmt='o',c='grey')
+
 plt.scatter(x,y,s=4,facecolor='none',edgecolor='r')
 plt.errorbar(x,y,ms=4,yerr=ylolim,lolims=True,xlolims=True,xerr=xlolim,markerfacecolor='none',markeredgecolor='r',fmt='o',c='r')
 plt.errorbar(x,y,ms=4,uplims=True,yerr=yuplim,xuplims=True,xerr=xuplim,markerfacecolor='none',markeredgecolor='r',fmt='o',c='r')
@@ -283,6 +265,9 @@ ratiolt5=[]
 minlgt10=[]
 minlgt5=[]
 minllt5=[]
+
+F_var=[n for n in fluxratio if n > 10]
+print('F_var',len(F_var))
 for i in range(0,len(fluxratio),1):
     if fluxratio[i]>=10:
         ratiogt10.append(fluxratio[i])
