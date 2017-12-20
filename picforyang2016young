@@ -19,9 +19,6 @@ import variance
 
 import numpy as np
 
-
-
-#file2
 file2=fits.open('/media/ashley/KINGSTON/dataforyang2.fits')
 flux=np.ndarray.tolist(file2[1].data.field('flux_aper_b'))
 flux_hilim=np.ndarray.tolist(file2[1].data.field('flux_aper_hilim_b'))
